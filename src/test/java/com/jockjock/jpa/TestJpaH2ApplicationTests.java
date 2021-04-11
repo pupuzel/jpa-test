@@ -27,13 +27,7 @@ class TestJpaH2ApplicationTests {
 	
 	@Test
 	void contextLoads() {
-		Post post = new Post("jock", "테스트", "컨텐트");
-		em.persist(post);
-		
-		Board board  = new Board("Q&A");
 
-		//var boardQA = em.find(Board.class, 1);
-		//System.out.println(boardQA.getTitle());
 
 		
 
