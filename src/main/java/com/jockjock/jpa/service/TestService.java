@@ -1,9 +1,10 @@
 package com.jockjock.jpa.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jockjock.jpa.domain.board.Board;
@@ -24,29 +25,22 @@ public class TestService {
 	public Map save() throws Exception {
 		Map result = new HashMap<String,Object>();
 		
-		Board board = new Board();
-		board.setTitle("커뮤니티");
-		boardDAO.save(board);
+		result.put("result", "Y");
+		return result;
+	}
+	
+	public Map read() throws Exception {
+		Map result = new HashMap<String,Object>();
 		
-		/*
-		 * 저장하는 순간 영속성 앤티티에서 관리하게됨 그래서 아래 update sql 구문으로 날려줌
-		 * */
-		//board.setTitle("큐앤에이");
+		Optional<Post> post = postDAO.findById(2L);
+		String board_title = post.get().getBoard().getTitle();
+		System.out.println(board_title);
 		
-		Post post1 = new Post();
-		post1.setTitle("테스트 제목1");
-		post1.setContent("테스트 컨텐트");
-		post1.setUser_id("jockjock");
-		post1.setBoard(board);
-		postDAO.save(post1);
-		
-		Post post2 = new Post();
-		post2.setTitle("테스트 제목2");
-		post2.setContent("테스트 컨텐트");
-		post2.setUser_id("thor");
-		post2.setBoard(board);
-		postDAO.save(post2);
-		
+		Optional<Board> board = boardDAO.findById(1L);
+		List<Post> posts = board.get().getPosts();
+		posts.stream().forEach( o -> {
+			System.out.println(o.getTitle());
+		});
 		
 		result.put("result", "Y");
 		return result;

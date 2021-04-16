@@ -39,4 +39,9 @@ public class TestController {
 		return new ResponseEntity<Map>(testService.save(), HttpStatus.OK);
 	}
 	
+	@RequestMapping("/api/read")
+	public ResponseEntity<Map> read(HttpServletRequest request) throws Exception{
+		return new ResponseEntity<Map>(testService.read(), HttpStatus.OK);
+	}
+	
 }
