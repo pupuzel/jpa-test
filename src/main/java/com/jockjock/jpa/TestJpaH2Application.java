@@ -7,14 +7,10 @@ import org.springframework.context.annotation.Bean;
 
 import com.jockjock.jpa.domain.board.Board;
 import com.jockjock.jpa.domain.board.BoardDAO;
-import com.jockjock.jpa.domain.member.Member;
 import com.jockjock.jpa.domain.member.MemberDAO;
-import com.jockjock.jpa.domain.order.Order;
 import com.jockjock.jpa.domain.order.OrderDAO;
-import com.jockjock.jpa.domain.order.OrderStatus;
 import com.jockjock.jpa.domain.post.Post;
 import com.jockjock.jpa.domain.post.PostDAO;
-import com.jockjock.jpa.domain.product.Product;
 import com.jockjock.jpa.domain.product.ProductDAO;
 
 import lombok.AllArgsConstructor;
@@ -68,8 +64,9 @@ public class TestJpaH2Application {
 			
 			//board = boardDAO.findById(1L).get();
 			//board.getPosts().add(post3);
-			
+
 			/***************************************************************************************************/
+
 		};
 	}
 

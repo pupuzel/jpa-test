@@ -1,23 +1,18 @@
 package com.jockjock.jpa.service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Service;
 
-import com.jockjock.jpa.domain.board.Board;
 import com.jockjock.jpa.domain.board.BoardDAO;
 import com.jockjock.jpa.domain.member.Member;
 import com.jockjock.jpa.domain.member.MemberDAO;
 import com.jockjock.jpa.domain.order.Order;
 import com.jockjock.jpa.domain.order.OrderDAO;
-import com.jockjock.jpa.domain.order.OrderStatus;
-import com.jockjock.jpa.domain.post.Post;
 import com.jockjock.jpa.domain.post.PostDAO;
 import com.jockjock.jpa.domain.product.Product;
 import com.jockjock.jpa.domain.product.ProductDAO;
@@ -43,15 +38,24 @@ public class TestService {
 	
 	public Map save() throws Exception {
 		Map result = new HashMap<String,Object>();
+
+
+
+		result.put("result", "Y");
+		return result;
+	}
+	
+	public Map read() throws Exception {
+		Map result = new HashMap<String,Object>();
 		
 		Member member1 = new Member();
 		member1.setName("유저A");
 		memberDAO.save(member1);
-		
+
 		Product productA = new Product();
 		productA.setName("상품A");
 		productDAO.save(productA);
-		
+
 		Product productB = new Product();
 		productB.setName("상품B");
 		productDAO.save(productB);
@@ -65,7 +69,7 @@ public class TestService {
 		order2.setMember(member1);
 		order2.setProduct(productB);
 		orderDAO.save(order2);
-		
+
 		memberDAO.findAll().stream().forEach( o -> {
 			System.out.println(o.getName());
 			
@@ -78,16 +82,4 @@ public class TestService {
 		return result;
 	}
 	
-	public Map read() throws Exception {
-		Map result = new HashMap<String,Object>();
-		
-		Optional<Board> board = boardDAO.findById(1L);
-		List<Post> posts = board.get().getPosts();
-		posts.stream().forEach( o -> {
-			System.out.println(o.getTitle());
-		});
-
-		result.put("result", "Y");
-		return result;
-	}
 }
