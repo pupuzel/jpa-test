@@ -53,7 +53,7 @@ public class Order {
 			this.member = member;
 			member.getOrders().add(this);
 		}
-
+		// 아직 DB에 저장되지 않은, persistence context에 존재하는 Member 정보들을 Order 엔티티가 참조할 수 있도록 수정
 
 	}
 

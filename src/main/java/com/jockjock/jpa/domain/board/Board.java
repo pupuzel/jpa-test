@@ -25,7 +25,7 @@ public class Board {
 	private long id;
 	
 	private String title;
-	
+		
 	@OneToMany(mappedBy = "board") // 연관관계의 주인인 Post.board 를 지정
 	private List<Post> posts;
 }
