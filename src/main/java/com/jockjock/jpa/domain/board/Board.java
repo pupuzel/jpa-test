@@ -1,5 +1,6 @@
 package com.jockjock.jpa.domain.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -27,5 +28,5 @@ public class Board {
 	private String title;
 	
 	@OneToMany(mappedBy = "board") // 연관관계의 주인인 Post.board 를 지정
-	private List<Post> posts;
+	private List<Post> posts = new ArrayList();
 }

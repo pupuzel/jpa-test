@@ -4,12 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity 
 @Getter
+@Table(name= "T_MEMBER")
 @Setter
 public class Member {
 	
@@ -18,7 +20,4 @@ public class Member {
 	private Long id;
 	
 	private String name;
-	private String city;
-	private String street;
-	private String zipcode;
 }

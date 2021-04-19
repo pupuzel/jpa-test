@@ -52,4 +52,8 @@ public class Post {
     @JoinColumn(name ="BOARD_ID")
     private Board board;
     
+    public void setBoard(Board board) {
+    	this.board = board;
+    	board.getPosts().add(this);
+    }
 }

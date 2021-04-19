@@ -18,7 +18,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name ="ORDERS")
+@Table(name ="T_ORDER")
 public class Order {
 	
 	@Id @GeneratedValue

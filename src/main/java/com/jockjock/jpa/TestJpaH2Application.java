@@ -1,5 +1,7 @@
 package com.jockjock.jpa;
 
+import java.util.Optional;
+
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,14 +25,10 @@ public class TestJpaH2Application {
 	@Bean
 	public ApplicationRunner applicationRun() {
 		return (args) -> {
+			
 			Board board = new Board();
 			board.setTitle("커뮤니티");
 			boardDAO.save(board);
-			
-			/*
-			 * 저장하는 순간 영속성 앤티티에서 관리하게됨 그래서 아래 update sql 구문으로 날려줌
-			 * */
-			//board.setTitle("큐앤에이");
 			
 			Post post1 = new Post();
 			post1.setTitle("테스트 제목1");
@@ -45,16 +43,6 @@ public class TestJpaH2Application {
 			post2.setUser_id("thor");
 			post2.setBoard(board);
 			postDAO.save(post2);
-			
-			Post post3 = new Post();
-			post3.setTitle("테스트 제목3");
-			post3.setContent("테스트 컨텐트");
-			post3.setUser_id("pupuzel");
-			post3.setBoard(board);
-			
-			//board = boardDAO.findById(1L).get();
-			//board.getPosts().add(post3);
-			
 		};
 	}
 
