@@ -1,4 +1,4 @@
-package com.jockjock.jpa.domain.order;
+package com.jockjock.jpa.domain.relation.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.jockjock.jpa.domain.member;
+package com.jockjock.jpa.domain.relation.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.jockjock.jpa.domain.board;
+package com.jockjock.jpa.domain.relation.board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.jockjock.jpa.domain.post.Post;
+import com.jockjock.jpa.domain.relation.post.Post;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.jockjock.jpa.domain.product;
+package com.jockjock.jpa.domain.relation.product;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

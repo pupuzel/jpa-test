@@ -1,4 +1,4 @@
-package com.jockjock.jpa.domain.post;
+package com.jockjock.jpa.domain.relation.post;
 
 import java.util.List;
 

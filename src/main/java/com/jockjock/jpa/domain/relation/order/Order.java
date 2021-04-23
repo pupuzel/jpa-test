@@ -1,4 +1,4 @@
-package com.jockjock.jpa.domain.order;
+package com.jockjock.jpa.domain.relation.order;
 
 import java.util.Date;
 
@@ -17,8 +17,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.jockjock.jpa.domain.member.Member;
-import com.jockjock.jpa.domain.product.Product;
+import com.jockjock.jpa.domain.relation.member.Member;
+import com.jockjock.jpa.domain.relation.product.Product;
 
 import lombok.Getter;
 import lombok.Setter;

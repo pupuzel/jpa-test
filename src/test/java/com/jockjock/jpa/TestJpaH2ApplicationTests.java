@@ -6,8 +6,6 @@ import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.jockjock.jpa.domain.board.Board;
-import com.jockjock.jpa.domain.post.Post;
 
 	/*	
 		em.find();    // 엔티티 조회

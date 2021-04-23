@@ -1,4 +1,4 @@
-package com.jockjock.jpa.domain.post;
+package com.jockjock.jpa.domain.relation.post;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.jockjock.jpa.domain.board.Board;
+import com.jockjock.jpa.domain.relation.board.Board;
 
 import lombok.Getter;
 import lombok.Setter;
