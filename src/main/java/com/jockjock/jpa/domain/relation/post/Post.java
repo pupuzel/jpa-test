@@ -35,7 +35,7 @@ public class Post {
 	@Column(columnDefinition = "varchar(40)", nullable = false)
 	private String title;
 	
-	@Column(columnDefinition = "varchar(1000)", nullable = false)
+	@Column(columnDefinition = "varchar(1000)", nullable = true)
 	private String content;
 	
     @CreationTimestamp

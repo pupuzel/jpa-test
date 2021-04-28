@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jockjock.jpa.service.TestRelationService;
+import com.jockjock.jpa.service.TestService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @AllArgsConstructor
 @Slf4j
-public class TestRelationController {
+public class TestController {
 	
-	private TestRelationService testRelationService;
+	private TestService testRelationService;
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Map> exception(Exception e) {

@@ -28,7 +28,7 @@ public class Member {
 	
 	private String name; 
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "member", orphanRemoval = true)
 	private List<Order> orders = new ArrayList();
 	
 }

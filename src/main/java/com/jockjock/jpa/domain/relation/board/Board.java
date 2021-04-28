@@ -3,6 +3,7 @@ package com.jockjock.jpa.domain.relation.board;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,6 +28,6 @@ public class Board {
 	
 	private String title;
 	
-	@OneToMany(mappedBy = "board") // 연관관계의 주인인 Post.board 를 지정
+	@OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true) // 연관관계의 주인인 Post.board 를 지정
 	private List<Post> posts = new ArrayList();
 }
