@@ -19,10 +19,14 @@ import com.jockjock.jpa.domain.join.item.Item;
 import com.jockjock.jpa.domain.join.movie.Movie;
 import com.jockjock.jpa.domain.relation.board.Board;
 import com.jockjock.jpa.domain.relation.member.Member;
+import com.jockjock.jpa.domain.relation.member.QMember;
 import com.jockjock.jpa.domain.relation.order.Order;
+import com.jockjock.jpa.domain.relation.order.QOrder;
 import com.jockjock.jpa.domain.relation.post.Post;
 import com.jockjock.jpa.domain.relation.product.Product;
 import com.jockjock.jpa.embedded.Address;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Component
 @Transactional
@@ -33,7 +37,7 @@ public class JpaRunner implements ApplicationRunner{
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		jpqlTest3();
+		queryDslTest();
 	}
 	
 	
@@ -51,7 +55,7 @@ public class JpaRunner implements ApplicationRunner{
 		em.persist(movie);
 	}
 	
-	private void persistTest() {
+	private void orderTestData() {
 		Member member1 = new Member();
 		member1.setName("유저A");
 		em.persist(member1);
@@ -76,8 +80,7 @@ public class JpaRunner implements ApplicationRunner{
 
 	}
 	
-	
-	private void casCadeTest() {
+	private Board boardTestData() {
 		Board board = new Board();
 		board.setTitle("커뮤니티");
 		
@@ -91,40 +94,20 @@ public class JpaRunner implements ApplicationRunner{
 		post2.setUser_id("족족몬");
 		post2.setBoard(board);
 		
+		return board;
+	}
+	
+	
+	private void casCadeTest() {
+		Board board = boardTestData();
+		
 		em.persist(board);
 		
 		board = em.find(Board.class, board.getId());
 		board.getPosts().remove(0);
 	}
 	
-	private void embeddedTest() {
-		Member member = new Member();
-		member.setName("전진광");
-		
-		em.persist(member);
-	}
-	
-	private void jpqlTest1() {
-		Member member = new Member();
-		member.setName("전진광");
-		
-		Address address = new Address();
-		address.setCity("부천");
-		address.setStreet("오정구 원종동");
-		
-		member.setHomeAddress(address);
-
-		em.persist(member);
-		em.flush();
-		
-		String jpql = "select m from Member as m where m.name = '전진광' ";
-		var list = em.createQuery(jpql, Member.class).getResultList();
-		
-		list.stream().forEach(System.out::println);
-		
-	}
-	
-	private void jpqlTest2() {
+	private void EmbeddTest() {
 		Member member = new Member();
 		member.setName("전진광");
 		
@@ -146,28 +129,8 @@ public class JpaRunner implements ApplicationRunner{
 		
 	}
 	
-	private void jpqlTest3() {
-		Member member1 = new Member();
-		member1.setName("유저A");
-		em.persist(member1);
-
-		Product productA = new Product();
-		productA.setName("상품A");
-		em.persist(productA);
-
-		Product productB = new Product();
-		productB.setName("상품B");
-		em.persist(productB);
-		
-		Order order1 = new Order();
-		order1.setMember(member1);
-		order1.setProduct(productA);
-		em.persist(order1);
-		
-		Order order2 = new Order();
-		order2.setMember(member1);
-		order2.setProduct(productB);
-		em.persist(order2);
+	private void fetchJoinTest() {
+		orderTestData();
 		
 		em.flush();
 /*		
@@ -185,7 +148,7 @@ public class JpaRunner implements ApplicationRunner{
 		}
 */		
 		//패치조인 하면 지연로딩이 아닌 쿼리 하나로 전체 조회 할 수 있음
-		String jpql2 = "select o from Order o inner join fetch o.member where o.orderDate = {d '2021-05-02'} ";
+		String jpql2 = "select o from Order o inner join fetch o.member ";
 		var orderList = em.createQuery(jpql2, Order.class).getResultList();
 		orderList.stream().forEach( o -> {
 			var name = o.getMember().getName();
@@ -216,6 +179,22 @@ public class JpaRunner implements ApplicationRunner{
 		var list = em.createQuery(cq).getResultList();
 		
 		list.stream().forEach(System.out::println);
+	}
+	
+	
+	private void queryDslTest() {
+		orderTestData();
+		
+		JPAQueryFactory  query = new JPAQueryFactory(em); 
+		QOrder qOrder = new QOrder("o");
+		List<Order> orders = (List<Order>)
+				query.from(qOrder)
+				.where(qOrder.member.name.eq("유저A"))
+				.orderBy(qOrder.member.name.desc())
+				.fetch();
+		
+		orders.stream().forEach( o -> System.out.println(o.getMember().getName()) );
+		
 	}
 
 }
