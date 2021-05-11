@@ -1,52 +1,69 @@
 plugins {
 	id 'org.springframework.boot' version '2.4.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
- 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 /*********** queryDSL 설정 ***********/
-def queryDslDir = "src/main/generated"
-querydsl { // Querydsl plugin 에서 사용하는 블록임 (https://github.com/ewerk/gradle-plugins/tree/master/querydsl-plugin 참조)
-    library = "com.querydsl:querydsl-apt" // 사용할 AnnotationProcesoor 정의
+def querydslDir = 'src/main/generated'
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
     jpa = true
-    querydslSourcesDir = queryDslDir
+    querydslSourcesDir = querydslDir
+}
+
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
 }
 sourceSets {
     main {
         java {
-            srcDir queryDslDir
+            srcDirs = ['src/main/java', querydslDir]
         }
     }
 }
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl // querydsl-apt의 annotationProcessor 경로 지정
-}
 /************************************/
 
+
+group = 'com.jockjock.jpa'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	querydsl.extendsFrom compileClasspath // querydsl의 컴파일된 classpath 경로 지정
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
-repositories { mavenCentral() }
+repositories { 
+	mavenCentral() 
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
-	annotationProcessor 'com.querydsl:querydsl-apt'
-	implementation 'com.querydsl:querydsl-jpa'
-	
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	
-	runtimeOnly 'com.h2database:h2'
-	
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compile("com.querydsl:querydsl-jpa")
+    compile("com.querydsl:querydsl-apt") 
+    
+    runtimeOnly 'com.h2database:h2'
+    
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    
+    // test시에도 query dsl 모델을 사용하기 위해서는 해당 옵션을 추가 해줘야 한다.
+    testCompileOnly("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 test { useJUnitPlatform() }

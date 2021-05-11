@@ -1,11 +1,11 @@
 package com.jockjock.jpa;
 
-import java.util.Arrays;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -19,25 +19,34 @@ import com.jockjock.jpa.domain.join.item.Item;
 import com.jockjock.jpa.domain.join.movie.Movie;
 import com.jockjock.jpa.domain.relation.board.Board;
 import com.jockjock.jpa.domain.relation.member.Member;
-import com.jockjock.jpa.domain.relation.member.QMember;
 import com.jockjock.jpa.domain.relation.order.Order;
 import com.jockjock.jpa.domain.relation.order.QOrder;
 import com.jockjock.jpa.domain.relation.post.Post;
 import com.jockjock.jpa.domain.relation.product.Product;
+import com.jockjock.jpa.domain.test.academy.Academy;
+import com.jockjock.jpa.domain.test.academy.AcademyQueryRepository;
+import com.jockjock.jpa.domain.test.academy.AcademyRepository;
 import com.jockjock.jpa.embedded.Address;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Component
 @Transactional
 public class JpaRunner implements ApplicationRunner{
 
-	@PersistenceContext
+	private AcademyRepository  academyRepository;
+	
+	private AcademyQueryRepository academyQueryRepository;
+	
 	private EntityManager em;
+	
+	
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		queryDslTest();
+		nativeQueryTest2();
 	}
 	
 	
@@ -94,14 +103,14 @@ public class JpaRunner implements ApplicationRunner{
 		post2.setUser_id("족족몬");
 		post2.setBoard(board);
 		
+		em.persist(board);
+		
 		return board;
 	}
 	
 	
 	private void casCadeTest() {
 		Board board = boardTestData();
-		
-		em.persist(board);
 		
 		board = em.find(Board.class, board.getId());
 		board.getPosts().remove(0);
@@ -184,7 +193,7 @@ public class JpaRunner implements ApplicationRunner{
 	
 	private void queryDslTest() {
 		orderTestData();
-		
+
 		JPAQueryFactory  query = new JPAQueryFactory(em); 
 		QOrder qOrder = new QOrder("o");
 		List<Order> orders = (List<Order>)
@@ -194,7 +203,53 @@ public class JpaRunner implements ApplicationRunner{
 				.fetch();
 		
 		orders.stream().forEach( o -> System.out.println(o.getMember().getName()) );
+
+	}
+	
+	private void queryDslTest2() {
 		
+        String name = "jojoldu";
+        String address = "jojoldu@gmail.com";
+        Academy academy = new Academy(name, address);
+        //academy.setDate(LocalDateTime.now());
+        
+        academyRepository.save(academy);
+        
+        List<Academy> result = academyQueryRepository.findByName(name);
+        
+        System.out.println(result.size());
+	}
+	
+	private void nativeQueryTest1() {
+		boardTestData();
+		
+		String sql = "SELECT * FROM T_POST";
+		Query nativeQuery = em.createNativeQuery(sql);
+		
+		List<Post> list = nativeQuery.getResultList();
+		list.stream().forEach( o -> {
+			System.out.println(o.toString());
+		});
+	}
+	
+	private void nativeQueryTest2() {
+		orderTestData();
+		
+		String sql = " SELECT " + 
+						"    A.*" + 
+						"   ,(SELECT COUNT(1) FROM T_ORDER WHERE MEMBER_ID = A.MEMBER_ID) AS ORDER_COUNT" + 
+						" FROM T_MEMBER A";
+		
+		Query q = em.createNativeQuery(sql,"memberList");
+		List<Object[]> list = q.getResultList();
+		
+		for(Object[] row : list) {
+			Member m = (Member) row[0];
+			BigInteger count = (BigInteger) row[1];
+			
+			System.out.println(m.getName());
+			System.out.println(count);
+		}
 	}
 
 }
