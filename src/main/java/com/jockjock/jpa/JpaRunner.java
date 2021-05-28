@@ -46,7 +46,7 @@ public class JpaRunner implements ApplicationRunner{
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		nativeQueryTest2();
+		queryDslTest2();
 	}
 	
 	
@@ -211,13 +211,13 @@ public class JpaRunner implements ApplicationRunner{
         String name = "jojoldu";
         String address = "jojoldu@gmail.com";
         Academy academy = new Academy(name, address);
-        //academy.setDate(LocalDateTime.now());
-        
+
         academyRepository.save(academy);
+        var userList = academyRepository.findByName(name);
         
-        List<Academy> result = academyQueryRepository.findByName(name);
-        
-        System.out.println(result.size());
+        //List<Academy> result = academyQueryRepository.findByName(name);
+     
+        userList.stream().forEach(o -> System.out.println(o.getAddress()) );
 	}
 	
 	private void nativeQueryTest1() {

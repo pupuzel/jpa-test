@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import static com.jockjock.jpa.domain.test.academy.QAcademy.academy;
 
 @RequiredArgsConstructor
-public class AcademyRepositoryImpl implements AcademyRepositoryCustom {
+public class AcademyRepositoryCustomImpl implements AcademyRepositoryCustom {
 
 	private final JPAQueryFactory queryFactory;
 	
@@ -21,3 +21,7 @@ public class AcademyRepositoryImpl implements AcademyRepositoryCustom {
 	}
 
 }
+
+
+
+

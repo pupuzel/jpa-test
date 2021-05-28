@@ -27,11 +27,6 @@ public class Academy {
 
     private String name;
     private String address;
-    
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @Setter
-    private Date date;    
 
     @Builder
     public Academy(String name, String address) {
